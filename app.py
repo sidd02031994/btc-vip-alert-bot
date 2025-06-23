@@ -10,6 +10,9 @@ TELEGRAM_CHAT_ID = os.getenv("TELEGRAM_CHAT_ID")
 @app.route("/", methods=["POST"])
 def webhook():
     data = request.json
+    print("🚀 Webhook triggered")
+    print("Incoming data:", data)
+
     message = data.get("message", "🚨 Alert Triggered (No message content)")
 
     telegram_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
@@ -20,6 +23,10 @@ def webhook():
     }
 
     r = requests.post(telegram_url, data=payload)
+
+    print(f"Telegram API Status: {r.status_code}")
+    print(f"Telegram Response: {r.text}")
+
     return {"ok": True, "telegram_status": r.status_code}
 
 @app.route("/", methods=["GET"])
